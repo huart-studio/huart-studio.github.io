@@ -150,15 +150,17 @@ footer nav { display: flex; gap: 16px; }
 .studio-page .lang a { color: var(--smoke); }
 .studio-page .lang b { background: var(--line); color: #fff; }
 
-.studio-hero { position: relative; overflow: hidden; padding-block: 56px 64px;
+.studio-hero { position: relative; overflow: hidden; padding-block: 72px 80px;
   background:
     radial-gradient(circle at 12% 20%, rgba(255, 201, 40, .45) 0 120px, transparent 121px),
     radial-gradient(circle at 88% 30%, rgba(30, 155, 255, .22) 0 160px, transparent 161px),
     radial-gradient(circle at 70% 95%, rgba(79, 181, 47, .22) 0 140px, transparent 141px),
     radial-gradient(rgba(58, 36, 18, .09) 1.5px, transparent 1.6px) 0 0 / 22px 22px,
     var(--ink); }
-.studio-hero .wrap { display: grid; grid-template-columns: minmax(0, 520px) 1fr; gap: 24px 48px; align-items: center; }
-.studio-hero-logo { width: 100%; height: auto; }
+.studio-hero .lead { max-width: 40em; }
+.hero-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.studio-page .hero-links a { padding: 8px 18px; border-radius: 999px; border: 3px solid var(--line); background: var(--sun); color: var(--line); font-family: var(--display); font-size: 17px; text-decoration: none; box-shadow: 3px 3px 0 var(--line); }
+.studio-page .hero-links a + a { background: var(--leaf); color: #fff; }
 .studio-hero h1 { font-size: clamp(34px, 5vw, 54px); margin-top: 6px; }
 .studio-hero .lead { color: var(--smoke); margin-top: 10px; font-size: 17px; }
 
@@ -183,13 +185,15 @@ a.game-card:hover { transform: translate(-2px, -3px) rotate(-.6deg); box-shadow:
 .studio-page .doc { padding-block: 48px 64px; }
 .studio-page .doc li b { color: var(--gold); }
 
+.edu { background: linear-gradient(180deg, rgba(79, 181, 47, .10), rgba(30, 155, 255, .08)); border-block: 2px solid var(--line); }
+.edu-card > div { gap: 8px; }
+.edu-ico { font-size: 40px; line-height: 1; }
+.edu-card small { background: var(--leaf); color: #fff; }
 .contact { padding-block: 40px 56px; }
 .contact h2 { font-size: 24px; margin-bottom: 8px; }
 .langs a { color: var(--gold); }
 @media (max-width: 760px) {
   .studio-hero { padding-block: 32px 44px; }
-  .studio-hero .wrap { grid-template-columns: 1fr; }
-  .studio-hero-logo { max-width: 360px; }
   .studio-card { padding: 20px; }
 }
 @media (prefers-reduced-motion: reduce) { .game-card { transition: none; } a.game-card:hover { transform: none; } }
