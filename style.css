@@ -129,66 +129,69 @@ footer nav { display: flex; gap: 16px; }
 
 /* ---------- 휴아트 스튜디오 (홈·개인정보처리방침): 로고처럼 밝고 통통한 스티커 느낌 ---------- */
 .studio-page {
-  color-scheme: light;
-  --ink: #fbf8f2;        /* 바탕 */
-  --lacquer: #ffffff;    /* 카드 */
-  --lacquer-2: #fff4d6;
-  --line: #3a2412;       /* 로고 테두리 갈색 */
-  --paper: #2e1c0e;      /* 글자 */
-  --smoke: #6f5a47;
-  --gold: #e8900c;       /* 로고 주황 (흰 바탕에서 읽히게 진하게) */
-  --sun: #ffc928; --sky: #1e9bff; --leaf: #4fb52f;
+  color-scheme: dark;
+  --ink: #121014;        /* 바탕: 거의 검정 */
+  --lacquer: #1d1a20;    /* 카드 */
+  --lacquer-2: #262230;
+  --line: #3a3442;       /* 구분선 */
+  --paper: #f6f1ea;      /* 글자 */
+  --smoke: #b4aba2;
+  --gold: #ffb23e;       /* 로고 주황 */
+  --sun: #ffc928; --sky: #3aa9ff; --leaf: #5fd13a;
   --display: 'Jua', 'IBM Plex Sans KR', system-ui, sans-serif;
 }
 .studio-page body { background: var(--ink); }
 .studio-page h1, .studio-page h2, .studio-page h3 { letter-spacing: 0; }
 .studio-page .eyebrow { color: var(--sky); letter-spacing: .1em; }
-.studio-page a { color: #0a74d1; }
-.studio-page .bar { position: static; background: var(--ink); border-bottom: 2px solid var(--line); }
+.studio-page a { color: var(--sky); }
+.studio-page .bar { position: static; background: var(--ink); border-bottom: 1px solid var(--line); }
 .studio-page .brand { color: var(--paper); font-family: var(--display); font-size: 20px; font-weight: 400; }
 .studio-page .brand img { filter: none; }
 .studio-page .lang a { color: var(--smoke); }
-.studio-page .lang b { background: var(--line); color: #fff; }
+.studio-page .lang b { background: var(--paper); color: var(--ink); }
 
 .studio-hero { position: relative; overflow: hidden; padding-block: 72px 80px;
   background:
-    radial-gradient(circle at 12% 20%, rgba(255, 201, 40, .45) 0 120px, transparent 121px),
-    radial-gradient(circle at 88% 30%, rgba(30, 155, 255, .22) 0 160px, transparent 161px),
-    radial-gradient(circle at 70% 95%, rgba(79, 181, 47, .22) 0 140px, transparent 141px),
-    radial-gradient(rgba(58, 36, 18, .09) 1.5px, transparent 1.6px) 0 0 / 22px 22px,
+    radial-gradient(circle at 12% 20%, rgba(255, 201, 40, .22) 0 120px, transparent 121px),
+    radial-gradient(circle at 88% 30%, rgba(58, 169, 255, .20) 0 160px, transparent 161px),
+    radial-gradient(circle at 70% 95%, rgba(95, 209, 58, .16) 0 140px, transparent 141px),
+    radial-gradient(rgba(255, 255, 255, .07) 1.5px, transparent 1.6px) 0 0 / 22px 22px,
     var(--ink); }
 .studio-hero .lead { max-width: 40em; }
+.studio-hero.has-art { background: linear-gradient(90deg, rgba(18, 16, 20, .92) 0%, rgba(18, 16, 20, .6) 45%, rgba(18, 16, 20, 0) 75%), var(--hero-art) 70% center / cover no-repeat, var(--ink); }
+.game-card.next img { opacity: .85; }
 .hero-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
-.studio-page .hero-links a { padding: 8px 18px; border-radius: 999px; border: 3px solid var(--line); background: var(--sun); color: var(--line); font-family: var(--display); font-size: 17px; text-decoration: none; box-shadow: 3px 3px 0 var(--line); }
-.studio-page .hero-links a + a { background: var(--leaf); color: #fff; }
+.studio-page .hero-links a { padding: 8px 18px; border-radius: 999px; border: 0; background: var(--sun); color: #2a1a0c; font-family: var(--display); font-size: 17px; text-decoration: none; box-shadow: 0 4px 0 rgba(255, 201, 40, .35); }
+.studio-page .hero-links a + a { background: var(--leaf); color: #10240a; box-shadow: 0 4px 0 rgba(95, 209, 58, .35); }
 .studio-hero h1 { font-size: clamp(34px, 5vw, 54px); margin-top: 6px; }
 .studio-hero .lead { color: var(--smoke); margin-top: 10px; font-size: 17px; }
 
 .games { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; }
-.game-card { display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: var(--lacquer); border: 3px solid var(--line); box-shadow: 5px 6px 0 var(--line); color: var(--paper); text-decoration: none; transition: transform .15s, box-shadow .15s; }
+.game-card { --edge: var(--sun); display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: var(--lacquer); border: 3px solid var(--edge); box-shadow: 5px 6px 0 color-mix(in srgb, var(--edge) 35%, transparent); color: var(--paper); text-decoration: none; transition: transform .15s, box-shadow .15s; }
 .studio-page a.game-card { color: var(--paper); }
-a.game-card:hover { transform: translate(-2px, -3px) rotate(-.6deg); box-shadow: 8px 10px 0 var(--line); }
-.game-card img { width: 100%; height: auto; aspect-ratio: 920 / 430; object-fit: cover; border-bottom: 3px solid var(--line); }
+a.game-card:hover { transform: translate(-2px, -3px) rotate(-.6deg); box-shadow: 8px 10px 0 color-mix(in srgb, var(--edge) 45%, transparent); }
+.game-card img { width: 100%; height: auto; aspect-ratio: 920 / 430; object-fit: cover; border-bottom: 3px solid var(--edge); }
 .game-card > div { padding: 16px 18px 18px; display: grid; gap: 6px; }
-.game-card small { justify-self: start; padding: 2px 10px; border-radius: 999px; background: var(--sun); color: var(--line); font-size: 12px; font-weight: 600; }
+.game-card small { justify-self: start; padding: 2px 10px; border-radius: 999px; background: var(--sun); color: #2a1a0c; font-size: 12px; font-weight: 600; }
 .game-card h3 { font-size: 24px; }
 .game-card p { color: var(--smoke); font-size: 14.5px; }
-.game-card .more { color: #0a74d1; font-size: 14px; font-weight: 600; margin-top: 4px; }
-.game-card.next { border-style: dashed; box-shadow: none; background: transparent; justify-content: center; min-height: 190px; text-align: center; }
+.game-card .more { color: var(--sky); font-size: 14px; font-weight: 600; margin-top: 4px; }
+.game-card.next { --edge: var(--line); border-style: dashed; box-shadow: none; background: transparent; justify-content: center; min-height: 190px; text-align: center; }
 .game-card.next h3 { font-size: 20px; color: var(--smoke); }
 
 .studio-page .studio .wrap { display: block; }
-.studio-card { background: var(--lacquer); border: 3px solid var(--line); border-radius: 18px; box-shadow: 5px 6px 0 var(--line); padding: 24px 26px; max-width: 760px; }
+.studio-card { background: var(--lacquer); border: 3px solid var(--sky); border-radius: 18px; box-shadow: 5px 6px 0 rgba(58, 169, 255, .3); padding: 24px 26px; max-width: 760px; }
 .studio-page .studio h2 { font-size: 28px; }
-.studio-page .info .todo { color: #d23b2f; }
-.studio-page footer { border-top: 2px solid var(--line); }
+.studio-page .info .todo { color: #ff7a6b; }
+.studio-page footer { border-top: 1px solid var(--line); }
 .studio-page .doc { padding-block: 48px 64px; }
 .studio-page .doc li b { color: var(--gold); }
 
-.edu { background: linear-gradient(180deg, rgba(79, 181, 47, .10), rgba(30, 155, 255, .08)); border-block: 2px solid var(--line); }
+.edu { background: linear-gradient(180deg, rgba(95, 209, 58, .07), rgba(58, 169, 255, .06)); border-block: 1px solid var(--line); }
+.edu-card { --edge: var(--leaf); }
 .edu-card > div { gap: 8px; }
 .edu-ico { font-size: 40px; line-height: 1; }
-.edu-card small { background: var(--leaf); color: #fff; }
+.edu-card small { background: var(--leaf); color: #10240a; }
 .contact { padding-block: 40px 56px; }
 .contact h2 { font-size: 24px; margin-bottom: 8px; }
 .langs a { color: var(--gold); }
