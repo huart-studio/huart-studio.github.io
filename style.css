@@ -34,6 +34,7 @@ p { margin: 0; }
 .bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 16px; }
 .brand { display: flex; align-items: center; gap: 10px; color: var(--paper); text-decoration: none; font-weight: 600; letter-spacing: .02em; }
 .brand img { width: 80px; height: 40px; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .6)); }
+.brand img.brand-symbol { width: 40px; height: 40px; }
 .lang { display: flex; gap: 4px; font-size: 13px; }
 .lang a, .lang b { padding: 4px 10px; border-radius: 999px; text-decoration: none; color: var(--smoke); }
 .lang b { color: var(--ink); background: var(--paper); font-weight: 600; }
@@ -142,6 +143,7 @@ footer nav { display: flex; gap: 16px; }
 }
 .studio-page body { background: var(--ink); }
 .studio-page h1, .studio-page h2, .studio-page h3 { letter-spacing: 0; }
+.studio-page :is(h1, h2, h3, p, .lead) { word-break: keep-all; overflow-wrap: anywhere; }
 .studio-page .eyebrow { color: var(--sky); letter-spacing: .1em; }
 .studio-page a { color: var(--sky); }
 .studio-page .bar { position: static; background: var(--ink); border-bottom: 1px solid var(--line); }
@@ -158,7 +160,13 @@ footer nav { display: flex; gap: 16px; }
     radial-gradient(rgba(255, 255, 255, .07) 1.5px, transparent 1.6px) 0 0 / 22px 22px,
     var(--ink); }
 .studio-hero .lead { max-width: 40em; }
-.studio-hero.has-art { background: linear-gradient(90deg, rgba(18, 16, 20, .92) 0%, rgba(18, 16, 20, .6) 45%, rgba(18, 16, 20, 0) 75%), var(--hero-art) 70% center / cover no-repeat, var(--ink); }
+.studio-hero.has-art { min-height: 440px; display: flex; align-items: center; background: var(--ink); }
+/* 그림은 오른쪽에 원래 비율대로, 왼쪽 가장자리는 바탕으로 스며들게 */
+.studio-hero.has-art::after { content: ''; position: absolute; top: 0; right: 0; height: 100%; aspect-ratio: 16 / 9; background: var(--hero-art) center / cover no-repeat;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 38%); mask-image: linear-gradient(90deg, transparent 0, #000 38%); pointer-events: none; }
+.studio-hero.has-art .wrap { position: relative; z-index: 1; }
+.studio-hero.has-art .wrap { width: 100%; }
+.studio-hero.has-art h1, .studio-hero.has-art .lead, .studio-hero.has-art .eyebrow { max-width: 520px; text-shadow: 0 2px 10px var(--ink); }
 .game-card.next img { opacity: .85; }
 .hero-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
 .studio-page .hero-links a { padding: 8px 18px; border-radius: 999px; border: 0; background: var(--sun); color: #2a1a0c; font-family: var(--display); font-size: 17px; text-decoration: none; box-shadow: 0 4px 0 rgba(255, 201, 40, .35); }
@@ -197,6 +205,10 @@ a.game-card:hover { transform: translate(-2px, -3px) rotate(-.6deg); box-shadow:
 .langs a { color: var(--gold); }
 @media (max-width: 760px) {
   .studio-hero { padding-block: 32px 44px; }
+  /* 폰: 그림을 위에 온전히 보여 주고 글은 그 아래 */
+  .studio-hero.has-art { min-height: 0; display: block; padding-top: calc(56.25vw - 24px); }
+  .studio-hero.has-art::after { left: 0; width: 100%; height: auto;
+    -webkit-mask-image: linear-gradient(180deg, #000 65%, transparent); mask-image: linear-gradient(180deg, #000 65%, transparent); }
   .studio-card { padding: 20px; }
 }
 @media (prefers-reduced-motion: reduce) { .game-card { transition: none; } a.game-card:hover { transform: none; } }
