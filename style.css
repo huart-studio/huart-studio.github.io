@@ -127,28 +127,69 @@ footer nav { display: flex; gap: 16px; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
-/* 스튜디오 홈 */
-.studio-hero { padding-block: 120px 56px; }
-.studio-hero::before { opacity: .35; }
-.studio-hero .wrap { display: grid; grid-template-columns: minmax(0, 420px) 1fr; gap: 24px 40px; align-items: center; }
-.studio-hero-logo { width: 100%; height: auto; filter: drop-shadow(0 10px 24px rgba(0, 0, 0, .6)); }
-.studio-hero h1 { font-size: clamp(30px, 4.4vw, 46px); margin-top: 8px; }
-.games { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
-.game-card { display: flex; flex-direction: column; border-radius: 12px; overflow: hidden; background: var(--lacquer); border: 1px solid var(--line); color: var(--paper); text-decoration: none; transition: border-color .2s, transform .2s; }
-a.game-card:hover { border-color: var(--gold); transform: translateY(-2px); }
-.game-card img { width: 100%; height: auto; aspect-ratio: 920 / 430; object-fit: cover; }
+/* ---------- 휴아트 스튜디오 (홈·개인정보처리방침): 로고처럼 밝고 통통한 스티커 느낌 ---------- */
+.studio-page {
+  color-scheme: light;
+  --ink: #fbf8f2;        /* 바탕 */
+  --lacquer: #ffffff;    /* 카드 */
+  --lacquer-2: #fff4d6;
+  --line: #3a2412;       /* 로고 테두리 갈색 */
+  --paper: #2e1c0e;      /* 글자 */
+  --smoke: #6f5a47;
+  --gold: #e8900c;       /* 로고 주황 (흰 바탕에서 읽히게 진하게) */
+  --sun: #ffc928; --sky: #1e9bff; --leaf: #4fb52f;
+  --display: 'Jua', 'IBM Plex Sans KR', system-ui, sans-serif;
+}
+.studio-page body { background: var(--ink); }
+.studio-page h1, .studio-page h2, .studio-page h3 { letter-spacing: 0; }
+.studio-page .eyebrow { color: var(--sky); letter-spacing: .1em; }
+.studio-page a { color: #0a74d1; }
+.studio-page .bar { position: static; background: var(--ink); border-bottom: 2px solid var(--line); }
+.studio-page .brand { color: var(--paper); font-family: var(--display); font-size: 20px; font-weight: 400; }
+.studio-page .brand img { filter: none; }
+.studio-page .lang a { color: var(--smoke); }
+.studio-page .lang b { background: var(--line); color: #fff; }
+
+.studio-hero { position: relative; overflow: hidden; padding-block: 56px 64px;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(255, 201, 40, .45) 0 120px, transparent 121px),
+    radial-gradient(circle at 88% 30%, rgba(30, 155, 255, .22) 0 160px, transparent 161px),
+    radial-gradient(circle at 70% 95%, rgba(79, 181, 47, .22) 0 140px, transparent 141px),
+    radial-gradient(rgba(58, 36, 18, .09) 1.5px, transparent 1.6px) 0 0 / 22px 22px,
+    var(--ink); }
+.studio-hero .wrap { display: grid; grid-template-columns: minmax(0, 520px) 1fr; gap: 24px 48px; align-items: center; }
+.studio-hero-logo { width: 100%; height: auto; }
+.studio-hero h1 { font-size: clamp(34px, 5vw, 54px); margin-top: 6px; }
+.studio-hero .lead { color: var(--smoke); margin-top: 10px; font-size: 17px; }
+
+.games { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; }
+.game-card { display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: var(--lacquer); border: 3px solid var(--line); box-shadow: 5px 6px 0 var(--line); color: var(--paper); text-decoration: none; transition: transform .15s, box-shadow .15s; }
+.studio-page a.game-card { color: var(--paper); }
+a.game-card:hover { transform: translate(-2px, -3px) rotate(-.6deg); box-shadow: 8px 10px 0 var(--line); }
+.game-card img { width: 100%; height: auto; aspect-ratio: 920 / 430; object-fit: cover; border-bottom: 3px solid var(--line); }
 .game-card > div { padding: 16px 18px 18px; display: grid; gap: 6px; }
-.game-card small { color: var(--gold); font-size: 12px; letter-spacing: .06em; }
-.game-card h3 { font-size: 22px; }
+.game-card small { justify-self: start; padding: 2px 10px; border-radius: 999px; background: var(--sun); color: var(--line); font-size: 12px; font-weight: 600; }
+.game-card h3 { font-size: 24px; }
 .game-card p { color: var(--smoke); font-size: 14.5px; }
-.game-card .more { color: var(--gold); font-size: 14px; font-weight: 600; margin-top: 4px; }
-.game-card.next { border-style: dashed; background: transparent; justify-content: center; min-height: 180px; }
-.game-card.next h3 { font-size: 19px; color: var(--smoke); }
+.game-card .more { color: #0a74d1; font-size: 14px; font-weight: 600; margin-top: 4px; }
+.game-card.next { border-style: dashed; box-shadow: none; background: transparent; justify-content: center; min-height: 190px; text-align: center; }
+.game-card.next h3 { font-size: 20px; color: var(--smoke); }
+
+.studio-page .studio .wrap { display: block; }
+.studio-card { background: var(--lacquer); border: 3px solid var(--line); border-radius: 18px; box-shadow: 5px 6px 0 var(--line); padding: 24px 26px; max-width: 760px; }
+.studio-page .studio h2 { font-size: 28px; }
+.studio-page .info .todo { color: #d23b2f; }
+.studio-page footer { border-top: 2px solid var(--line); }
+.studio-page .doc { padding-block: 48px 64px; }
+.studio-page .doc li b { color: var(--gold); }
+
 .contact { padding-block: 40px 56px; }
 .contact h2 { font-size: 24px; margin-bottom: 8px; }
 .langs a { color: var(--gold); }
 @media (max-width: 760px) {
+  .studio-hero { padding-block: 32px 44px; }
   .studio-hero .wrap { grid-template-columns: 1fr; }
-  .studio-hero-logo { max-width: 320px; }
+  .studio-hero-logo { max-width: 360px; }
+  .studio-card { padding: 20px; }
 }
 @media (prefers-reduced-motion: reduce) { .game-card { transition: none; } a.game-card:hover { transform: none; } }
