@@ -11,6 +11,7 @@ https://huart-studio.github.io
 - `build/DESIGN.md` — 사이트 그림 요청 시트
 - `style.css`, `img/` — 디자인과 그림 (만들기 과정에서 그대로 씀). 게임 소개 그림은 `img/chef/` (셰프 서바이버 저장소의 아트·스크린샷에서 만듦)
 - `index.html`, `en/`, `chef-survivor/`, `privacy.html` — 만들어진 결과물. **직접 고치지 말 것** (다시 만들면 덮어씀)
+- `google5525f3c65b29d534.html` — Google Search Console 소유권 확인 파일. **지우면 인증이 풀림**
 
 ## 고친 뒤 올리기
 1. `node build/build.js` (Node.js만 있으면 됨, 설치할 패키지 없음)
