@@ -9,8 +9,8 @@ https://huart-studio.github.io
 - `build/site.json` — 상호·대표자·사업자등록번호·주소·이메일, 게임 목록. **사업자등록증과 똑같이** 적으세요 (구글이 대조함). 빈 칸은 페이지에 "입력 필요"로 보임
 - `build/build.js` — 페이지 글(한국어·영어)과 HTML 틀. 게임 소개·개인정보처리방침 문구는 여기서 고침
 - `build/DESIGN.md` — 사이트 그림 요청 시트
-- `style.css`, `img/` — 디자인과 그림 (만들기 과정에서 그대로 씀)
-- `index.html`, `en/`, `idle-mandate/`, `privacy.html` — 만들어진 결과물. **직접 고치지 말 것** (다시 만들면 덮어씀)
+- `style.css`, `img/` — 디자인과 그림 (만들기 과정에서 그대로 씀). 게임 소개 그림은 `img/chef/` (셰프 서바이버 저장소의 아트·스크린샷에서 만듦)
+- `index.html`, `en/`, `chef-survivor/`, `privacy.html` — 만들어진 결과물. **직접 고치지 말 것** (다시 만들면 덮어씀)
 
 ## 고친 뒤 올리기
 1. `node build/build.js` (Node.js만 있으면 됨, 설치할 패키지 없음)

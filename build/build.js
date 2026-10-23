@@ -1,7 +1,7 @@
 // 휴아트 스튜디오 웹사이트 만들기: build/site.json(사업자 정보·게임 목록) + 아래 글 → 저장소 맨 위의 HTML
-//   /            스튜디오 홈(게임 목록·사업자 정보)   /en/  영어
-//   /idle-mandate/  천명: 삼국 방치 영웅전 소개       /idle-mandate/en/  영어
-//   /privacy.html   개인정보처리방침(스튜디오의 모든 게임) /en/privacy.html  영어
+//   /                 스튜디오 홈(게임 목록·사업자 정보)   /en/  영어
+//   /chef-survivor/   셰프 서바이버 소개                 /chef-survivor/en/  영어
+//   /privacy.html     개인정보처리방침(스튜디오의 모든 게임) /en/privacy.html  영어
 // 새 게임을 추가하면 site.json의 games에 한 줄 넣고, 게임 소개 페이지는 아래 gamePage처럼 만들면 됩니다.
 //   node build/build.js                  → 저장소 맨 위에 HTML을 다시 씀 (style.css·img/는 그대로 씀)
 //   node build/build.js --preview <폴더>  → 미리보기용 (클로드 아티팩트 형식, 한국어 첫 페이지)
@@ -9,65 +9,65 @@
 const fs = require('fs'), path = require('path');
 const root = path.join(__dirname, '..');
 const cfg = JSON.parse(fs.readFileSync(path.join(__dirname, 'site.json'), 'utf8'));
+const chef = cfg.games.find(g => g.id === 'chef-survivor');
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const L = (v, lang) => (v && typeof v === 'object' ? v[lang] || v.ko || '' : v || '');
 const YEAR = new Date().getFullYear();
 
-// 장마다 대표 전장 그림 (img/zone-N.webp, N은 1부터)
-const CHAPTER_ART = [3, 6, 9, 12, 15, 19, 22];
-// 천명의 장·전장 이름 (게임의 ZONES와 영어 번역에서 옮겨 적음. 게임에서 바뀌면 여기도 고칠 것)
-const CHAPTERS = {
+// 셰프 서바이버 레시피 진화 8종: 그림(img/chef/recipe-*.webp), 요리, 조리도구, 재료 (게임의 이름 그대로)
+const RECIPES = {
   ko: [
-    ['황건적의 난', ['탁현 들판', '청주성', '광종']],
-    ['반동탁 연합', ['사수관', '호로관', '낙양']],
-    ['군웅할거', ['계교', '완성', '하비성', '수춘']],
-    ['관도대전', ['백마', '관도']],
-    ['형주 쟁탈과 적벽', ['신야', '장판파', '적벽']],
-    ['삼국정립', ['동관', '정군산', '번성', '이릉']],
-    ['남정과 북벌', ['남만', '가정', '오장원']],
+    ['julienne', '채썰기 폭풍', '식칼', '향신료'],
+    ['wok', '웍 토네이도', '프라이팬', '미끄럼 방지화'],
+    ['bbq', '바비큐 파티', '불판', '시식'],
+    ['meringue', '머랭 폭풍', '거품기', '설탕'],
+    ['pastry', '페이스트리 롤러', '밀대', '버터'],
+    ['salt-rain', '소금 결정 비', '소금통', '레몬'],
+    ['hotpot', '전골 폭발', '냄비 뚜껑', '육수'],
+    ['brulee', '크렘 브륄레', '토치', '설탕'],
   ],
   en: [
-    ['Yellow Turban Rebellion', ['Zhuo County Fields', 'Qingzhou Castle', 'Guangzong']],
-    ['Coalition Against Dong Zhuo', ['Sishui Gate', 'Hulao Gate', 'Luoyang']],
-    ['Rise of the Warlords', ['Jieqiao', 'Wancheng', 'Xiapi Castle', 'Shouchun']],
-    ['Battle of Guandu', ['Baima', 'Guandu']],
-    ['Jingzhou and Red Cliffs', ['Xinye', 'Changban', 'Red Cliffs']],
-    ['Three Kingdoms Stand', ['Tong Pass', 'Mount Dingjun', 'Fancheng', 'Yiling']],
-    ['Southern and Northern Campaigns', ['Nanman', 'Jieting', 'Wuzhang Plains']],
+    ['julienne', 'Julienne Storm', 'Kitchen Knife', 'Spice'],
+    ['wok', 'Wok Tornado', 'Frying Pan', 'Non-slip Shoes'],
+    ['bbq', 'BBQ Party', 'Hot Grill', 'Taste Test'],
+    ['meringue', 'Meringue Storm', 'Whisk', 'Sugar'],
+    ['pastry', 'Pastry Roller', 'Rolling Pin', 'Butter'],
+    ['salt-rain', 'Salt Crystal Rain', 'Salt Shaker', 'Lemon'],
+    ['hotpot', 'Hotpot Blast', 'Pot Lid', 'Broth'],
+    ['brulee', 'Creme Brulee', 'Torch', 'Sugar'],
   ],
 };
 
 const T = {
   ko: {
     langName: '한국어', other: 'en', otherName: 'English', otherHref: 'en/',
-    title: '천명: 삼국 방치 영웅전',
-    desc: '나만의 장수로 황건적의 난부터 오장원까지 22개 전장을 평정하는 삼국지 방치형 RPG. 장수 60명을 모아 변신하세요.',
-    eyebrow: '삼국지 방치형 RPG',
-    h1: '켜 두면 싸우고, 돌아오면 강해져 있는 삼국지',
-    lead: '나만의 장수를 만들어 황건적의 난부터 오장원의 마지막 결전까지 22개 전장을 평정하세요. 앱을 꺼 두어도 싸움은 계속됩니다.',
+    title: '셰프 서바이버',
+    desc: '폭주한 식재료 몬스터를 요리해서 진정시키는 셰프의 10분 생존기. 조리도구에 재료를 더하면 레시피가 완성되어 요리 필살기로 진화합니다.',
+    eyebrow: '요리 서바이버 액션',
+    h1: '오늘 밤 영업, 10분만 버티면 된다',
+    lead: '전설의 레스토랑 창고에서 식재료들이 폭주했습니다. 움직이기만 하면 조리도구가 알아서 요리합니다. 조리도구에 맞는 재료를 더해 레시피를 완성하세요.',
     soon: '출시 예정', now: '지금 받기',
-    langs: '한국어 · English · 简体中文 · 日本語',
-    routeEyebrow: '7장 · 22개 전장', routeH: '도원결의에서 오장원까지',
-    routeLead: '삼국지 이야기 순서대로 전장이 열립니다. 전장마다 그 시대의 장수가 보스로 기다립니다.',
-    chapter: n => `제${n}장`,
-    routeNote: '무료 체험은 제2장 낙양(동탁)까지, 정식판은 22개 전장 모두 즐길 수 있습니다.',
-    featEyebrow: '게임 특징', featH: '장수를 모으고, 변신하고, 천하를 차지하라',
+    langs: '한국어 · English',
+    recipeEyebrow: '레시피 진화 8종', recipeH: '조리도구 + 재료 = 요리 필살기',
+    recipeLead: '조리도구를 최고 레벨까지 키우고 짝이 되는 재료를 가지고 있으면, 요리 이름 그대로의 필살기로 진화합니다.',
+    recipeNote: '조리도구 8종 · 재료 8종 · 레시피 8종',
+    featEyebrow: '게임 특징', featH: '짧게 한 판, 길게 키우는 재미',
     features: [
-      ['guanyu', '나만의 장수', '이름과 직업(맹장·궁수·책사), 나라(위·촉·오·군웅)를 골라 캐릭터를 만듭니다. 레벨이 오를 때마다 능력치를 직접 나눕니다.'],
-      ['caocao', '장수 60명으로 변신', '관우·조조·주유·여포… 장수카드를 착용하면 그 장수의 능력치와 특수기술로 싸웁니다. 전용 소환수와 무기카드까지 모으면 혼연일체.'],
-      ['zhugeliang', '꺼 두어도 계속되는 싸움', '앱을 닫은 동안에도 사냥은 이어지고, 돌아오면 그동안 모은 골드와 장비를 한 번에 받습니다.'],
-      ['lvbu', '매일 할 거리', '성 12곳을 공성하는 천하 점령, 주마다 바뀌는 토벌전, 연무장 상성 대결과 천하 명장록 순위.'],
-      ['zhouyu', '영구 성장', '본진 건설, 전설의 보패 8종, 백성에서 승상까지 관직 승진, 관성대의 별자리, 그리고 천하통일로 이어지는 회차.'],
-      ['zhaoyun', '보스와 직접 겨루기', '보스의 큰 공격을 제때 막으면 반격. 화면을 지나가는 황금 수레를 잡으면 보너스를 얻습니다.'],
+      ['head-idle', '셰프 4명', '저마다 다른 조리도구로 시작하는 셰프 4명. 셰프마다 가장 높은 난이도 클리어 기록이 남습니다.'],
+      ['cabbage-king', '스테이지와 보스', '채소밭과 정육점. 5분과 10분에 거대 호박, 양배추 왕, 통돼지 구이 같은 보스가 나타납니다.'],
+      ['tomato-soup', '나만의 식당', '판에서 모은 재료로 식당 메뉴를 열고, 수익으로 셰프 훈련과 영구 강화를 합니다.'],
+      ['star', '별 난이도 · 무한 영업', '별 1~5 난이도와 끝없이 강해지는 무한 영업. 날짜마다 모두가 같은 조건으로 겨루는 일일 도전.'],
+      ['chest', '엘리트와 레시피 상자', '금테를 두른 엘리트를 잡으면 레시피 상자가 떨어집니다. 완성할 수 있는 레시피가 맨 앞에 나옵니다.'],
+      ['recipe-wok', '폭력 대신 요리', '쓰러뜨리는 대신 요리합니다. 밝고 귀여운 그림이라 누구나 편하게 즐길 수 있습니다.'],
     ],
-    shotsEyebrow: '스크린샷', shotsH: '손안의 삼국지',
-    shots: [['01-battle', '전장'], ['03-heroes', '장수카드'], ['05-conquest', '천하 점령'], ['06-observatory', '관성대']],
-    dealH: '무료로 시작하고, 마음에 들면 한 번만 구매',
-    dealLead: '제2장(낙양 동탁)까지 무료로 즐기고, 정식판을 한 번 구매하면 모든 전장과 콘텐츠가 열립니다. 진행은 그대로 이어집니다.',
-    chips: ['<b>광고</b> 없음', '<b>가챠 과금</b> 없음', '<b>에너지 제한</b> 없음', '<b>4개 언어</b> 지원', '<b>오프라인</b> 플레이'],
+    shotsEyebrow: '스크린샷', shotsH: '저녁 영업 미리 보기',
+    shots: [['gameplay', '채소밭 영업'], ['evolved', '레시피 진화'], ['levelup', '레벨업 선택'], ['butcher', '정육점 스테이지'], ['restaurant', '식당'], ['book', '레시피 도감']],
+    dealH: '무료로 즐기고, 광고는 원할 때만',
+    dealLead: '광고는 부활이나 보상 2배가 필요할 때 직접 골라서 봅니다. 광고 제거를 한 번 구매하면 광고 없이 바로 보상을 받습니다. PC(Steam) 버전에는 광고가 없습니다.',
+    chips: ['<b>강제 광고</b> 없음', '<b>가챠 과금</b> 없음', '<b>에너지 제한</b> 없음', '<b>한국어 · 영어</b>', '<b>오프라인</b> 플레이'],
     studioEyebrow: '개발사',
-    studioLead: s => `${s}는 PC·모바일 게임과 유아·초등 교육 프로그램을 만드는 스튜디오입니다. 첫 작품 「천명: 삼국 방치 영웅전」을 Steam과 Google Play에 출시할 준비를 하고 있습니다. 문의와 버그 제보는 아래 이메일로 보내 주세요.`,
+    studioLead: s => `${s}는 PC·모바일 게임과 유아·초등 교육 프로그램을 만드는 스튜디오입니다. 첫 작품 「셰프 서바이버」를 Google Play와 Steam에 출시할 준비를 하고 있습니다. 문의와 버그 제보는 아래 이메일로 보내 주세요.`,
     homeEyebrow: '게임 · 교육 콘텐츠 스튜디오', homeTitle: s => `${s} 스튜디오`,
     homeLead: '오래 곁에 두고 즐길 수 있는 게임과, 유아·초등 아이들이 놀이하며 배우는 교육 프로그램을 만듭니다.',
     eduEyebrow: '교육 프로그램', eduH: '놀이하며 배우는 유아·초등 교육',
@@ -81,47 +81,47 @@ const T = {
     privacy: '개인정보처리방침',
     privacyTitle: '개인정보처리방침',
     privacyDate: d => `시행일: ${d}`,
-    privacyIntro: s => `${s}가 만든 게임(현재 「천명: 삼국 방치 영웅전」, 이하 "게임")은 이용자의 개인정보를 수집하지 않습니다. 이 방침은 게임의 PC(Steam)·안드로이드(Google Play) 버전에 적용됩니다.`,
+    privacyIntro: s => `이 방침은 ${s}가 만든 게임(현재 「셰프 서바이버」, 이하 "게임")의 PC(Steam)·안드로이드(Google Play) 버전에 적용됩니다. 게임은 회원 가입이나 로그인을 요구하지 않으며, 개발자가 이름·이메일·연락처 같은 개인정보를 직접 수집하지 않습니다.`,
     privacyItems: e => [
-      ['수집하는 정보', '없습니다. 게임은 회원 가입이나 로그인을 요구하지 않으며, 이름·연락처·위치·기기 식별자 등 어떤 개인정보도 수집하거나 서버로 보내지 않습니다.'],
-      ['게임 저장 데이터', '캐릭터 이름과 진행 상황은 이용자의 기기 안에만 저장되며(Steam 버전은 이용자가 켠 경우 Steam 클라우드에 동기화), 앱을 삭제하면 함께 지워집니다. 개발자는 이 데이터에 접근할 수 없습니다.'],
-      ['결제', '정식판 구매는 Google Play 결제 시스템 또는 Steam으로 처리됩니다. 결제 정보는 각 회사가 처리하며 개발자는 카드 번호 등 결제 정보를 받지 않습니다. <a href="https://policies.google.com/privacy">Google 개인정보처리방침</a> · <a href="https://store.steampowered.com/privacy_agreement/">Steam 개인정보 보호정책</a>'],
-      ['광고·분석', '광고와 사용자 분석 도구를 사용하지 않습니다.'],
-      ['아동', '게임은 13세 미만 아동을 대상으로 하지 않으며, 아동의 개인정보도 수집하지 않습니다.'],
-      ['변경', '이 방침이 바뀌면 이 페이지에 알립니다.'],
+      ['게임 저장 데이터', '게임 진행 상황(골드, 재료, 기록, 설정)은 이용자의 기기 안에만 저장되며 개발자의 서버로 보내지 않습니다(Steam 버전은 이용자가 켠 경우 Steam 클라우드에 동기화). 앱을 삭제하면 함께 지워지며, 개발자는 이 데이터에 접근할 수 없습니다.'],
+      ['광고 (Google AdMob, 안드로이드 버전)', '이용자가 직접 고른 경우에만 보상형 광고를 보여 주기 위해 Google AdMob을 사용합니다. AdMob은 광고 제공, 노출 빈도 제한, 부정 행위 방지, 광고 성과 측정을 위해 광고 ID, 기기 정보, IP 주소(대략적 위치), 광고 상호작용 정보를 수집할 수 있습니다. 유럽 경제 지역·영국 등 동의가 필요한 지역에서는 처음 실행할 때 동의 여부를 묻고, 게임의 설정 &gt; "광고 개인정보 설정"에서 언제든 바꿀 수 있습니다. 기기 설정에서 광고 ID를 재설정하거나 맞춤 광고를 끌 수도 있습니다. <a href="https://policies.google.com/technologies/partner-sites">Google이 정보를 사용하는 방식</a>. PC(Steam) 버전에는 광고가 없습니다.'],
+      ['결제', '"광고 제거" 등 게임 안 구매는 Google Play 결제 시스템 또는 Steam으로 처리됩니다. 결제 정보는 각 회사가 처리하며 개발자는 카드 번호 등 결제 정보를 받지 않고, 게임은 구매 여부만 확인합니다. <a href="https://policies.google.com/privacy">Google 개인정보처리방침</a> · <a href="https://store.steampowered.com/privacy_agreement/">Steam 개인정보 보호정책</a>'],
+      ['분석', '사용자 분석 도구를 사용하지 않습니다.'],
+      ['아동', '게임은 13세 미만 아동을 대상으로 하지 않으며, 아동의 개인정보를 알면서 수집하지 않습니다.'],
+      ['보관 및 삭제', '기기 안의 게임 데이터는 앱을 삭제하면 지워집니다. 광고 관련 정보는 Google의 정책에 따라 처리됩니다.'],
+      ['변경', '이 방침이 바뀌면 새 시행일과 함께 이 페이지에 알립니다.'],
       ['문의', e],
     ],
     home: '홈',
   },
   en: {
     langName: 'English', other: 'ko', otherName: '한국어', otherHref: '../',
-    title: 'Idle Mandate: Three Kingdoms',
-    desc: 'A Three Kingdoms idle RPG. Forge your own hero, collect 60 generals and conquer 22 battlefields from the Yellow Turban Rebellion to the Wuzhang Plains.',
-    eyebrow: 'Three Kingdoms Idle RPG',
-    h1: 'It fights while you’re away. You come back stronger.',
-    lead: 'Forge your own hero and conquer 22 battlefields, from the Yellow Turban Rebellion to the final clash at the Wuzhang Plains. The battle goes on even when the app is closed.',
+    title: 'Chef Survivor',
+    desc: 'A chef’s 10-minute fight to calm runaway ingredient monsters by cooking them. Add the right ingredient to a kitchen tool and it evolves into a signature recipe.',
+    eyebrow: 'Cooking survivor action',
+    h1: 'Survive ten minutes of dinner service',
+    lead: 'The ingredients in a legendary restaurant’s pantry have gone wild. Just move — your kitchen tools cook on their own. Pair each tool with the right ingredient to complete its recipe.',
     soon: 'Coming soon', now: 'Get it now',
-    langs: 'Korean · English · Simplified Chinese · Japanese',
-    routeEyebrow: '7 chapters · 22 battlefields', routeH: 'From the Peach Garden to the Wuzhang Plains',
-    routeLead: 'Battlefields open in the order of the Three Kingdoms story, each guarded by a general of that era.',
-    chapter: n => `Chapter ${n}`,
-    routeNote: 'The free trial covers up to Chapter 2 (Dong Zhuo at Luoyang). The full game unlocks all 22 battlefields.',
-    featEyebrow: 'Features', featH: 'Collect generals, transform, rule the realm',
+    langs: 'Korean · English',
+    recipeEyebrow: '8 recipe evolutions', recipeH: 'Kitchen tool + ingredient = signature dish',
+    recipeLead: 'Max out a kitchen tool while holding its matching ingredient, and it evolves into a special move named after the dish.',
+    recipeNote: '8 kitchen tools · 8 ingredients · 8 recipes',
+    featEyebrow: 'Features', featH: 'Quick runs, long-term growth',
     features: [
-      ['guanyu', 'Your own hero', 'Pick a name, a class (Warrior, Archer, Strategist) and a kingdom (Wei, Shu, Wu, Warlords). Spend stat points yourself on every level-up.'],
-      ['caocao', 'Transform into 60 generals', 'Guan Yu, Cao Cao, Zhou Yu, Lü Bu… Equip a Hero Card to fight with that general’s stats and Special Skill. Add their Spirit Beast and Weapon Card for Perfect Unity.'],
-      ['zhugeliang', 'The battle never stops', 'Hunting continues while the app is closed. Come back and collect the gold and gear you earned in one go.'],
-      ['lvbu', 'Something new every day', 'Besiege 12 cities in Conquest, fight Weekly Raids, duel in the Training Arena and climb the Hall of Generals.'],
-      ['zhouyu', 'Permanent progression', 'Build your Headquarters, collect 8 legendary Relics, rise from Commoner to Chancellor, light the constellations — then Unify the Realm.'],
-      ['zhaoyun', 'Face the bosses', 'Parry a boss’s heavy attack at the right moment to counter-strike, and catch the Golden Cart as it rolls by.'],
+      ['head-idle', 'Four chefs', 'Four chefs, each starting with a different kitchen tool. Every chef keeps a record of the highest difficulty cleared.'],
+      ['cabbage-king', 'Stages and bosses', 'The Vegetable Garden and the Butcher Shop. At 5 and 10 minutes, bosses like the Giant Pumpkin, the Cabbage King and the Roast Pig show up.'],
+      ['tomato-soup', 'Your own restaurant', 'Unlock menu dishes with the ingredients you bring back, and spend the profits on chef training and permanent upgrades.'],
+      ['star', 'Star difficulty · Endless service', 'Difficulty from 1 to 5 stars, an endless mode that keeps getting harder, and a Daily Challenge where everyone plays the same setup.'],
+      ['chest', 'Elites and recipe chests', 'Gold-trimmed elites drop recipe chests, and any recipe you can complete is offered first.'],
+      ['recipe-wok', 'Cooking, not violence', 'You cook your foes instead of knocking them out. Bright, cute art that anyone can enjoy.'],
     ],
-    shotsEyebrow: 'Screenshots', shotsH: 'The Three Kingdoms in your pocket',
-    shots: [['01-battle', 'Battlefield'], ['03-heroes', 'Hero Cards'], ['05-conquest', 'Conquest'], ['06-observatory', 'Observatory']],
-    dealH: 'Start free. Buy once if you like it.',
-    dealLead: 'Play free through Chapter 2 (Dong Zhuo at Luoyang). One purchase unlocks every battlefield and all content, and your progress carries over.',
-    chips: ['<b>No</b> ads', '<b>No</b> gacha payments', '<b>No</b> energy timers', '<b>4</b> languages', '<b>Offline</b> play'],
+    shotsEyebrow: 'Screenshots', shotsH: 'A look at dinner service',
+    shots: [['gameplay', 'Vegetable Garden'], ['evolved', 'Recipe evolutions'], ['levelup', 'Level-up choices'], ['butcher', 'Butcher Shop stage'], ['restaurant', 'Restaurant'], ['book', 'Recipe Book']],
+    dealH: 'Free to play. Ads only when you want them.',
+    dealLead: 'You choose to watch an ad only when you want a revive or double rewards. Buy Remove Ads once to get those rewards instantly with no ads. The PC (Steam) version has no ads.',
+    chips: ['<b>No</b> forced ads', '<b>No</b> gacha payments', '<b>No</b> energy timers', '<b>Korean · English</b>', '<b>Offline</b> play'],
     studioEyebrow: 'Studio',
-    studioLead: s => `${s} is a studio making PC and mobile games and learning programs for young children and elementary students. Our first title, Idle Mandate: Three Kingdoms, is coming to Steam and Google Play. For support or bug reports, email us at the address below.`,
+    studioLead: s => `${s} is a studio making PC and mobile games and learning programs for young children and elementary students. Our first title, Chef Survivor, is coming to Google Play and Steam. For support or bug reports, email us at the address below.`,
     homeEyebrow: 'Games · Learning studio', homeTitle: s => `${s} Studio`,
     homeLead: 'We make games you can keep coming back to, and learning programs where young children and elementary students learn through play.',
     eduEyebrow: 'Learning programs', eduH: 'Learning through play for kids',
@@ -135,37 +135,36 @@ const T = {
     privacy: 'Privacy Policy',
     privacyTitle: 'Privacy Policy',
     privacyDate: d => `Effective date: ${d}`,
-    privacyIntro: s => `Games made by ${s} (currently Idle Mandate: Three Kingdoms, “the Game”) do not collect any personal information. This policy applies to the PC (Steam) and Android (Google Play) versions of the Game.`,
+    privacyIntro: s => `This policy applies to the PC (Steam) and Android (Google Play) versions of games made by ${s} (currently Chef Survivor, “the Game”). The Game requires no account or sign-in, and the developer does not directly collect personal information such as your name, email or contacts.`,
     privacyItems: e => [
-      ['Information we collect', 'None. The Game requires no account or sign-in, and it does not collect or transmit any personal data such as names, contact details, location or device identifiers.'],
-      ['Save data', 'Your character name and progress are stored only on your device (synced to Steam Cloud if you enable it on Steam) and are deleted when you uninstall the app. The developer has no access to this data.'],
-      ['Payments', 'Purchases of the full game are processed by Google Play Billing or Steam. Payment information is handled by those companies; the developer never receives card numbers or other payment details. <a href="https://policies.google.com/privacy">Google Privacy Policy</a> · <a href="https://store.steampowered.com/privacy_agreement/">Steam Privacy Policy</a>'],
-      ['Ads and analytics', 'The Game uses no advertising or analytics tools.'],
+      ['Save data', 'Game progress (gold, ingredients, records, settings) is stored only on your device and is never sent to our servers (synced to Steam Cloud if you enable it on Steam). It is deleted when you uninstall the app, and the developer has no access to it.'],
+      ['Advertising (Google AdMob, Android version)', 'The Game uses Google AdMob to show rewarded ads, only when you choose to watch one. AdMob may collect your advertising ID, device information, IP address (approximate location) and ad interaction data to serve ads, limit frequency, prevent fraud and measure performance. Where consent is required (e.g. the EEA and the UK), you are asked on first launch and can change your choice at any time in the Game’s Settings &gt; “Ad Privacy Options”. You can also reset your advertising ID or opt out of personalized ads in your device settings. <a href="https://policies.google.com/technologies/partner-sites">How Google uses data</a>. The PC (Steam) version has no ads.'],
+      ['Payments', 'In-game purchases such as “Remove Ads” are processed by Google Play Billing or Steam. Payment information is handled by those companies; the developer never receives card numbers or other payment details, and the Game only checks whether an item was purchased. <a href="https://policies.google.com/privacy">Google Privacy Policy</a> · <a href="https://store.steampowered.com/privacy_agreement/">Steam Privacy Policy</a>'],
+      ['Analytics', 'The Game uses no analytics tools.'],
       ['Children', 'The Game is not directed at children under 13 and does not knowingly collect their personal information.'],
-      ['Changes', 'Any changes to this policy will be posted on this page.'],
+      ['Retention and deletion', 'Game data on your device is deleted when you uninstall the app. Advertising data is handled under Google’s policies.'],
+      ['Changes', 'Any changes to this policy will be posted on this page with a new effective date.'],
       ['Contact', e],
     ],
     home: 'Home',
   },
 };
 
-const FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600&family=Jua&family=Marcellus&family=Song+Myung&display=swap">';
+const FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600&family=Jua&display=swap">';
 
 // 디자인 요청 그림(build/DESIGN.md)이 img/에 있으면 쓰고, 없으면 지금 모양 그대로
 const hasImg = f => fs.existsSync(path.join(root, 'img', f));
 
 // 페이지마다: r = 사이트 맨 위까지의 상대 경로, where = 'studio' | 'game' | 'privacy'
-const PATHS = { studio: ['', 'en/'], game: ['idle-mandate/', 'idle-mandate/en/'], privacy: ['privacy.html', 'en/privacy.html'] };
+const PATHS = { studio: ['', 'en/'], game: ['chef-survivor/', 'chef-survivor/en/'], privacy: ['privacy.html', 'en/privacy.html'] };
 const href = (r, where, lang) => r + PATHS[where][lang === 'ko' ? 0 : 1];
 const absUrl = (where, lang) => (cfg.siteUrl ? cfg.siteUrl.replace(/\/$/, '') + '/' + PATHS[where][lang === 'ko' ? 0 : 1] : '');
 
-function doc(lang, r, where, title, desc, body, ogImg = 'og.jpg') {
-  const theme = where === 'game' ? '' : ' class="studio-page"'; // 스튜디오 홈·개인정보처리방침은 밝은 휴아트 색, 게임 페이지는 그 게임 분위기
-  if (where !== 'game' && hasImg('og-studio.jpg')) ogImg = 'og-studio.jpg';
+function doc(lang, r, where, title, desc, body, ogImg = 'og-studio.jpg') {
   const og = cfg.siteUrl ? cfg.siteUrl.replace(/\/$/, '') + '/img/' + ogImg : r + 'img/' + ogImg;
   const canonical = absUrl(where, lang);
   return `<!doctype html>
-<html lang="${lang}"${theme}>
+<html lang="${lang}" class="studio-page${where === 'game' ? ' game-page' : ''}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -175,7 +174,7 @@ function doc(lang, r, where, title, desc, body, ogImg = 'og.jpg') {
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:image" content="${esc(og)}">
-${canonical ? `<link rel="canonical" href="${esc(canonical)}">\n` : ''}${cfg.siteUrl ? `<link rel="alternate" hreflang="ko" href="${esc(absUrl(where, 'ko'))}"><link rel="alternate" hreflang="en" href="${esc(absUrl(where, 'en'))}">\n` : ''}<link rel="icon" href="${r}img/${where !== 'game' && hasImg('huart-symbol-64.png') ? 'huart-symbol-64.png' : 'favicon.png'}">${where !== 'game' && hasImg('huart-symbol.png') ? `<link rel="apple-touch-icon" href="${r}img/huart-symbol.png">` : ''}
+${canonical ? `<link rel="canonical" href="${esc(canonical)}">\n` : ''}${cfg.siteUrl ? `<link rel="alternate" hreflang="ko" href="${esc(absUrl(where, 'ko'))}"><link rel="alternate" hreflang="en" href="${esc(absUrl(where, 'en'))}">\n` : ''}<link rel="icon" href="${r}img/huart-symbol-64.png"><link rel="apple-touch-icon" href="${r}img/huart-symbol.png">
 ${FONTS}
 <link rel="stylesheet" href="${r}style.css">
 </head>
@@ -189,7 +188,7 @@ ${body}
 function bar(lang, r, where) {
   const studio = L(cfg.studio, lang);
   return `<header class="bar"><div class="wrap">
-  <a class="brand" href="${href(r, 'studio', lang)}">${hasImg('huart-symbol.png') ? `<img class="brand-symbol" src="${r}img/huart-symbol-64.png" alt="" width="40" height="40">` : `<img src="${r}img/huart-logo-sm.webp" alt="" width="80" height="40">`}${esc(studio)}</a>
+  <a class="brand" href="${href(r, 'studio', lang)}"><img class="brand-symbol" src="${r}img/huart-symbol-64.png" alt="" width="40" height="40">${esc(studio)}</a>
   <nav class="lang" aria-label="Language">${lang === 'ko' ? `<b>한국어</b><a href="${href(r, where, 'en')}" hreflang="en">English</a>` : `<a href="${href(r, where, 'ko')}" hreflang="ko">한국어</a><b>English</b>`}</nav>
 </div></header>`;
 }
@@ -263,40 +262,40 @@ ${footer(t, lang, r, 'studio')}`;
   return doc(lang, r, 'studio', t.homeTitle(studio), t.studioLead(studio), body);
 }
 
-// 천명: 삼국 방치 영웅전 소개
+// 셰프 서바이버 소개
 function gamePage(lang) {
   const t = T[lang], r = lang === 'ko' ? '../' : '../../', studio = L(cfg.studio, lang);
   const body = `${bar(lang, r, 'game')}
 <main id="top">
-<section class="hero"><div class="wrap">
+<section class="hero" style="--hero-bg:url(${r}img/chef/hero-bg.jpg)"><div class="wrap">
   <p class="eyebrow">${t.eyebrow}</p>
-  <img class="hero-logo" src="${r}img/logo.png" alt="${esc(t.title)}" width="900" height="300">
+  <img class="hero-logo" src="${r}img/chef/logo.webp" alt="${esc(t.title)}" width="900" height="497">
   <h1>${t.h1}</h1>
   <p class="lead">${t.lead}</p>
-  <div class="stores">${store(t, cfg.steamUrl, 'Steam · PC')}${store(t, cfg.playUrl, 'Google Play · Android')}</div>
+  <div class="stores">${store(t, chef.playUrl, 'Google Play · Android')}${store(t, chef.steamUrl, 'Steam · PC')}</div>
   <p class="langs">${t.langs} · <a href="${href(r, 'studio', lang)}">${esc(t.madeBy(studio))}</a></p>
 </div></section>
 
 <section><div class="wrap">
-  <div class="head"><p class="eyebrow">${t.routeEyebrow}</p><h2>${t.routeH}</h2><p class="lead">${t.routeLead}</p></div>
-  <div class="route" tabindex="0">${CHAPTERS[lang].map(([name, zones], i) => `
-    <article class="chapter"><img src="${r}img/zone-${CHAPTER_ART[i]}.webp" alt="" width="640" height="342">
-      <div><small>${t.chapter(i + 1)}</small><h3>${esc(name)}</h3><p>${zones.map(esc).join(' · ')}</p></div></article>`).join('')}
+  <div class="head"><p class="eyebrow">${t.recipeEyebrow}</p><h2>${t.recipeH}</h2><p class="lead">${t.recipeLead}</p></div>
+  <div class="recipes">${RECIPES[lang].map(([id, dish, tool, ing]) => `
+    <article class="recipe"><img src="${r}img/chef/recipe-${id}.webp" alt="" width="128" height="122">
+      <div><h3>${esc(dish)}</h3><p>${esc(tool)} + ${esc(ing)}</p></div></article>`).join('')}
   </div>
-  <p class="route-note">${t.routeNote}</p>
+  <p class="route-note">${t.recipeNote}</p>
 </div></section>
 
 <section><div class="wrap">
   <div class="head"><p class="eyebrow">${t.featEyebrow}</p><h2>${t.featH}</h2></div>
-  <div class="features">${t.features.map(([h, name, text]) => `
-    <article class="feature"><img src="${r}img/hero-${h}.webp" alt="" width="76" height="76"><div><h3>${name}</h3><p>${text}</p></div></article>`).join('')}
+  <div class="features">${t.features.map(([f, name, text]) => `
+    <article class="feature"><img src="${r}img/chef/feat-${f}.webp" alt="" width="76" height="76"><div><h3>${name}</h3><p>${text}</p></div></article>`).join('')}
   </div>
 </div></section>
 
 <section><div class="wrap">
   <div class="head"><p class="eyebrow">${t.shotsEyebrow}</p><h2>${t.shotsH}</h2></div>
   <div class="shots" tabindex="0">${t.shots.map(([f, cap]) => `
-    <figure><img src="${r}img/shot-${lang}-${f}.jpg" alt="${esc(cap)}" width="480" height="853"><figcaption>${cap}</figcaption></figure>`).join('')}
+    <figure><img src="${r}img/chef/shot-${f}.jpg" alt="${esc(cap)}" width="1280" height="720" loading="lazy"><figcaption>${cap}</figcaption></figure>`).join('')}
   </div>
 </div></section>
 
@@ -311,7 +310,7 @@ function gamePage(lang) {
 </div></section>
 </main>
 ${footer(t, lang, r, 'game')}`;
-  return doc(lang, r, 'game', `${t.title} | ${studio}`, t.desc, body);
+  return doc(lang, r, 'game', `${t.title} | ${studio}`, t.desc, body, 'chef/og.jpg');
 }
 
 function privacy(lang) {
@@ -332,10 +331,13 @@ ${footer(t, lang, r, 'privacy')}`;
 
 function copyDir(src, dst) {
   fs.mkdirSync(dst, { recursive: true });
-  for (const f of fs.readdirSync(src)) fs.copyFileSync(path.join(src, f), path.join(dst, f));
+  for (const f of fs.readdirSync(src, { withFileTypes: true })) {
+    if (f.isDirectory()) copyDir(path.join(src, f.name), path.join(dst, f.name));
+    else fs.copyFileSync(path.join(src, f.name), path.join(dst, f.name));
+  }
 }
 
-const pages = [['index.html', studioHome('ko')], ['en/index.html', studioHome('en')], ['idle-mandate/index.html', gamePage('ko')], ['idle-mandate/en/index.html', gamePage('en')], ['privacy.html', privacy('ko')], ['en/privacy.html', privacy('en')]];
+const pages = [['index.html', studioHome('ko')], ['en/index.html', studioHome('en')], ['chef-survivor/index.html', gamePage('ko')], ['chef-survivor/en/index.html', gamePage('en')], ['privacy.html', privacy('ko')], ['en/privacy.html', privacy('en')]];
 const pi = process.argv.indexOf('--preview');
 if (pi > 0) {
   // 미리보기: 클로드 아티팩트는 <html>/<head>/<body> 없이 내용만 받음 (스튜디오 홈 한 장)

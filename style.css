@@ -1,4 +1,4 @@
-/* 개발사 웹사이트 — 옻칠한 나무(먹색 바탕), 금박, 붉은 인장 */
+/* 휴아트 개발사 웹사이트 — 기본 색은 아래 .studio-page(모든 페이지에 붙음)가 덮어씀 */
 :root {
   color-scheme: dark;
   --ink: #120d0b;
@@ -10,11 +10,10 @@
   --gold: #d9ab3f;
   --gold-soft: rgba(217, 171, 63, .14);
   --seal: #b3342b;
-  --display: 'Song Myung', 'Noto Serif KR', 'Nanum Myeongjo', serif;
+  --display: 'Jua', 'IBM Plex Sans KR', system-ui, sans-serif;
   --body: 'IBM Plex Sans KR', system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
   --wrap: 1120px;
 }
-html[lang="en"] { --display: 'Marcellus', 'Song Myung', Georgia, serif; }
 
 * { box-sizing: border-box; }
 html { background: var(--ink); scroll-behavior: smooth; }
@@ -39,9 +38,9 @@ p { margin: 0; }
 .lang a, .lang b { padding: 4px 10px; border-radius: 999px; text-decoration: none; color: var(--smoke); }
 .lang b { color: var(--ink); background: var(--paper); font-weight: 600; }
 
-/* 첫 화면: 키 아트 */
+/* 게임 소개 첫 화면: 키 아트 (그림은 --hero-bg) */
 .hero { position: relative; isolation: isolate; padding-block: 132px 72px; overflow: hidden; }
-.hero::before { content: ''; position: absolute; inset: 0; z-index: -2; background: url(img/hero-bg.jpg) 70% 30% / cover no-repeat; }
+.hero::before { content: ''; position: absolute; inset: 0; z-index: -2; background: var(--hero-bg) 50% 40% / cover no-repeat; }
 .hero::after { content: ''; position: absolute; inset: 0; z-index: -1;
   background: linear-gradient(90deg, rgba(18, 13, 11, .92) 0%, rgba(18, 13, 11, .7) 38%, rgba(18, 13, 11, .15) 70%), linear-gradient(0deg, var(--ink) 0%, rgba(18, 13, 11, 0) 40%); }
 .hero-logo { width: min(460px, 86%); filter: drop-shadow(0 6px 18px rgba(0, 0, 0, .6)); }
@@ -60,30 +59,28 @@ section { padding-block: 72px; }
 .head { display: grid; gap: 10px; margin-bottom: 28px; }
 .head h2 { font-size: clamp(26px, 3.4vw, 36px); }
 
-/* 22개 전장: 장마다 대표 전장 그림 */
-.route { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(250px, 300px); gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; scrollbar-color: var(--line) transparent; }
-.chapter { scroll-snap-align: start; background: var(--lacquer); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
-.chapter img { aspect-ratio: 16 / 9; width: 100%; height: auto; object-fit: cover; }
-.chapter div { padding: 14px 16px 16px; display: grid; gap: 4px; }
-.chapter small { color: var(--gold); font-size: 12px; letter-spacing: .08em; font-variant-numeric: tabular-nums; }
-.chapter h3 { font-size: 20px; }
-.chapter p { color: var(--smoke); font-size: 13px; }
+/* 레시피 진화: 그림 + 요리 이름 + 조리도구 + 재료 */
+.recipes { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+.recipe { display: grid; grid-template-columns: 64px 1fr; gap: 14px; align-items: center; padding: 14px 16px; border-radius: 14px; background: var(--lacquer); border: 1px solid var(--line); }
+.recipe img { width: 64px; height: 64px; object-fit: contain; }
+.recipe h3 { font-size: 19px; }
+.recipe p { color: var(--smoke); font-size: 13.5px; }
 .route-note { margin-top: 14px; font-size: 13px; color: var(--smoke); }
 
 /* 특징 */
 .features { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
 .feature { display: grid; grid-template-columns: 76px 1fr; gap: 16px; align-items: start; padding: 18px; border-radius: 12px; background: var(--lacquer); }
-.feature img { width: 76px; height: 76px; border-radius: 50%; object-fit: cover; object-position: 50% 12%; border: 2px solid var(--gold); background: var(--lacquer-2); }
+.feature img { width: 76px; height: 76px; border-radius: 18px; object-fit: contain; padding: 6px; border: 2px solid var(--line); background: var(--lacquer-2); }
 .feature h3 { font-size: 19px; margin-bottom: 6px; }
 .feature p { color: var(--smoke); font-size: 14.5px; }
 
 /* 스크린샷 */
-.shots { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(170px, 1fr); gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; }
+.shots { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(300px, 420px); gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; }
 .shots figure { margin: 0; scroll-snap-align: start; display: grid; gap: 8px; }
-.shots img { border-radius: 14px; border: 1px solid var(--line); aspect-ratio: 9 / 16; object-fit: cover; width: 100%; height: auto; }
+.shots img { border-radius: 14px; border: 1px solid var(--line); aspect-ratio: 16 / 9; object-fit: cover; width: 100%; height: auto; }
 .shots figcaption { font-size: 13px; color: var(--smoke); text-align: center; }
 
-/* 무료 체험 + 한 번 구매 */
+/* 수익 모델 안내 */
 .deal { background: linear-gradient(135deg, var(--lacquer-2), var(--lacquer)); border-block: 1px solid var(--line); }
 .deal .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: center; }
 .deal h2 { font-size: clamp(24px, 3vw, 32px); }
@@ -122,7 +119,7 @@ footer nav { display: flex; gap: 16px; }
   section { padding-block: 56px; }
   .deal .wrap, .studio .wrap { grid-template-columns: 1fr; }
   .studio-logo { width: min(300px, 80%); }
-  .shots { grid-auto-columns: 62%; }
+  .shots { grid-auto-columns: 86%; }
   .info { grid-template-columns: 1fr; gap: 2px; }
   .info dd { margin-bottom: 8px; }
 }
@@ -194,6 +191,12 @@ a.game-card:hover { transform: translate(-2px, -3px) rotate(-.6deg); box-shadow:
 .studio-page footer { border-top: 1px solid var(--line); }
 .studio-page .doc { padding-block: 48px 64px; }
 .studio-page .doc li b { color: var(--gold); }
+
+/* 게임 소개 페이지: 머리띠가 위에 따로 있으므로 첫 화면 여백을 줄임 */
+.game-page .hero { padding-block: 64px 72px; }
+.game-page .hero h1 { font-size: clamp(28px, 4.4vw, 44px); }
+.game-page .store.soon small { color: var(--sun); }
+.game-page .chips span b { color: var(--sun); }
 
 .edu { background: linear-gradient(180deg, rgba(95, 209, 58, .07), rgba(58, 169, 255, .06)); border-block: 1px solid var(--line); }
 .edu-card { --edge: var(--leaf); }
