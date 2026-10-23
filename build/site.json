@@ -1,0 +1,44 @@
+{
+  "_설명": "휴아트 웹사이트 설정. 상호·대표자·사업자번호·주소는 사업자등록증과 똑같이 (구글 조직 인증에서 대조함). 빈 칸은 페이지에 '입력 필요'로 보임. games에 게임을 추가하면 스튜디오 홈 목록에 나옴. 고친 뒤 node build/build.js",
+  "studio": {
+    "ko": "휴아트",
+    "en": "HuArt"
+  },
+  "owner": {
+    "ko": "김보라",
+    "en": "Kim Bora"
+  },
+  "bizNumber": "",
+  "mailOrderNumber": "",
+  "address": {
+    "ko": "",
+    "en": ""
+  },
+  "email": "huart2026@gmail.com",
+  "privacyDate": "2026-10-01",
+  "siteUrl": "https://huart-studio.github.io",
+  "steamUrl": "",
+  "playUrl": "",
+  "games": [
+    {
+      "id": "idle-mandate",
+      "image": "og.jpg",
+      "title": {
+        "ko": "천명: 삼국 방치 영웅전",
+        "en": "Idle Mandate: Three Kingdoms"
+      },
+      "tagline": {
+        "ko": "나만의 장수로 22개 전장을 평정하는 삼국지 방치형 RPG",
+        "en": "A Three Kingdoms idle RPG across 22 battlefields"
+      },
+      "platforms": {
+        "ko": "Steam · Google Play",
+        "en": "Steam · Google Play"
+      },
+      "status": {
+        "ko": "출시 예정",
+        "en": "Coming soon"
+      }
+    }
+  ]
+}
